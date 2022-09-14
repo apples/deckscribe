@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>DeckScribe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/csv-parse@5.3.0/dist/iife/sync.js"></script>
+    <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/monaco-editor@0.34.0/min/vs/loader.js"></script>
+    <script src="index.js" defer></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div>
+            <div class="header">
+                <button id="render-button">Render</button>
+                <label>Data file full path: <input id="datafilepath" type="text"></label>
+                <label>Card preview index: <input id="cardindex" type="number"></label>
+                <button id="render-all-button">Publish All</button>
+            </div>
+            <div class="header">
+                <label>DPI: <input id="dpiinput" type="number"></label>
+                <label>TTS Filename Prefix: <input id="tts-filename-prefix" type="text"></label>
+            </div>
+            <div id="monaco-container"></div>
+            <div class="header">
+                <div id="uploadbox">Drag files here<span class="loader"></span></div>
+            </div>
+            <div id="filelist">
+            </div>
+        </div>
+        <div>
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+    <template id="file-template">
+        <div class="file">
+            <div class="filename"></div>
+            <div class="fileimage">
+                <img src="">
+            </div>
+        </div>
+    </template>
+</body>
+
+</html>

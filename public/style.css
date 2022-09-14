@@ -1,0 +1,66 @@
+
+#canvas {
+    border: 3px solid magenta;
+}
+
+#textarea {
+
+}
+
+#uploadbox {
+    border: 1px solid red;
+    width: 500px;
+    height: 50px;
+}
+
+#monaco-container {
+    width: 1000px;
+    height: 800px;
+    border: 1px solid grey;
+}
+
+.header {
+    margin-bottom: 1em;
+}
+
+.wrapper {
+    display: flex;
+    gap: 1em;
+}
+
+.file {
+    display: flex;
+}
+
+.filename {
+    font-family: monospace;
+    width: 40em;
+}
+
+.fileimage img {
+    image-rendering: pixelated;
+    min-height: 2em;
+    max-height: 3em;
+}
+
+.loader {
+    visibility: hidden;
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
