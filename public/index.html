@@ -20,8 +20,6 @@
                 <button id="save-local">Download Backup</button>
                 <label>Deck name: <input id="deck-name" type="text"></label>
                 <label>Data file: <input id="datafilepath" type="text"></label>
-                <label>Preview index: <input id="cardindex" type="number"></label>
-                <button id="render-button">Render</button>
             </div>
             <div class="header">
                 <button id="load-local">Restore Backup</button>
@@ -30,19 +28,38 @@
                 <button id="render-all-button">Publish All</button>
             </div>
             <div class="header">
+                <label>Google Sheets URL: <input id="googlesheets-url" type="text"></label>
+                <label>Sheet Name: <input id="googlesheets-sheet" type="text"></label>
+                <label>Destination File: <input id="googlesheets-destination" type="text"></label>
+                <button id="googlesheets-import">Import Sheet</button>
+            </div>
+            <div class="header">
                 <div id="uploadbox">Drag new files here<span class="loader"></span></div>
             </div>
             <div id="filelist">
             </div>
         </div>
         <div>
-            <canvas id="canvas"></canvas>
+            <div>
+                <canvas id="canvas"></canvas>
+            </div>
+            <div style="text-align: center;">
+                <button id="cardindex-first">&lt;&lt;&lt;</button>
+                <button id="cardindex-prev">&lt;&mdash;</button>
+                <button id="cardindex-next">&mdash;></button>
+                <button id="cardindex-last">>>></button>
+            </div>
+            <div style="text-align: center;">
+                <label>Card index: <input id="cardindex" type="number"></label>
+                <button id="render-button">Render</button>
+            </div>
         </div>
     </div>
     <template id="file-template">
         <div class="file">
-            <div>
+            <div class="filebuttons">
                 <button class="filedelete">❌</button>
+                <button class="filerename">✍</button>
             </div>
             <div class="filename"></div>
             <div class="fileimage">

@@ -33,6 +33,15 @@ body {
     display: inline-block;
 }
 
+.fullpage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: 100% !important;
+}
+
 .header {
     margin-bottom: 1em;
 }
@@ -51,8 +60,18 @@ body {
     background: #222;
 }
 
+.filebuttons {
+    display: flex;
+    margin-right: 1em;
+}
+
 .filedelete {
     margin-right: 1em;
+}
+
+.filerename {
+    font-size: 200%;
+    line-height: 50%;
 }
 
 .filename {

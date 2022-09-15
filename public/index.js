@@ -14,6 +14,14 @@
     let saveLocalButton;
     let loadLocalButton;
     let deckNameInput;
+    let cardindexFirst;
+    let cardindexPrev;
+    let cardindexNext;
+    let cardindexLast;
+    let googleSheetsUrl;
+    let googleSheetsSheet;
+    let googleSheetsDestination;
+    let googleSheetsImport;
 
     let whiteboard;
 
@@ -26,6 +34,9 @@
         imagePrefix: '/',
         files: {},
         dataFilePath: '',
+        googleSheetsUrl: '',
+        googleSheetsSheet: '',
+        googleSheetsDestination: '',
     };
 
     let saveTimeout;
@@ -151,6 +162,30 @@
             }
         });
 
+        cardindexFirst = document.getElementById('cardindex-first');
+        cardindexFirst.addEventListener('click', () => {
+            cardindex.value = 1;
+            render();
+        });
+
+        cardindexPrev = document.getElementById('cardindex-prev');
+        cardindexPrev.addEventListener('click', () => {
+            cardindex.value = Math.max(1, +cardindex.value - 1);
+            render();
+        });
+
+        cardindexNext = document.getElementById('cardindex-next');
+        cardindexNext.addEventListener('click', () => {
+            cardindex.value = +cardindex.value + 1;
+            render();
+        });
+
+        cardindexLast = document.getElementById('cardindex-last');
+        cardindexLast.addEventListener('click', () => {
+            cardindex.value = 999;
+            render();
+        });
+
         datafilepath = document.getElementById('datafilepath');
         datafilepath.addEventListener('change', (ev) => {
             deck.dataFilePath = datafilepath.value;
@@ -159,8 +194,9 @@
         });
 
         cardindex = document.getElementById('cardindex');
+        cardindex.value = 1;
         cardindex.addEventListener('change', (ev) => {
-            if (cardindex.value < 1) {
+            if (+cardindex.value < 1) {
                 cardindex.value = 1;
             }
             render();
@@ -180,12 +216,74 @@
             saveDeckData(true);
         });
 
+        googleSheetsUrl = document.getElementById('googlesheets-url');
+        googleSheetsUrl.addEventListener('change', () => {
+            deck.googleSheetsUrl = googleSheetsUrl.value;
+            saveDeckData(true);
+        });
+
+        googleSheetsSheet = document.getElementById('googlesheets-sheet');
+        googleSheetsSheet.addEventListener('change', () => {
+            deck.googleSheetsSheet = googleSheetsSheet.value;
+            saveDeckData(true);
+        });
+        
+        googleSheetsDestination = document.getElementById('googlesheets-destination');
+        googleSheetsDestination.addEventListener('change', () => {
+            deck.googleSheetsDestination = googleSheetsDestination.value;
+            saveDeckData(true);
+        });
+
+        googleSheetsImport = document.getElementById('googlesheets-import');
+        googleSheetsImport.addEventListener('click', async () => {
+            googleSheetsImport.disabled = true;
+            try {
+                const url = deck.googleSheetsUrl;
+                const sheet = deck.googleSheetsSheet;
+                const destination = deck.googleSheetsDestination;
+
+                if (!url) {
+                    alert('Please enter a Google Sheets URL.');
+                    return;
+                }
+
+                if (!sheet) {
+                    alert('Please enter the sheet name.');
+                    return;
+                }
+
+                if (!destination) {
+                    alert('Please select a destination file.');
+                    return;
+                }
+
+                if (deck.files[destination] && !confirm(`Overwrite existing file ${destination}?`)) {
+                    return;
+                }
+
+                const data = await fetchGoogleSheets(url, sheet);
+                const file = {
+                    fullPath: destination,
+                    type: 'text',
+                    contents: data,
+                };
+                deck.files[destination] = file;
+
+                saveDeckData(true);
+                reloadDeck();
+            } catch (e) {
+                alert(e);
+            } finally {
+                googleSheetsImport.disabled = false;
+            }
+        });
+
         uploadbox = document.getElementById('uploadbox');
-        uploadbox.addEventListener('dragenter', (ev) => { ev.preventDefault(); });
         uploadbox.addEventListener('dragover', (ev) => { ev.preventDefault(); });
         uploadbox.addEventListener('drop', (ev) => {
             ev.preventDefault();
 
+            uploadbox.classList.remove('fullpage');
             uploadbox.querySelector('.loader').style.visibility = 'visible';
 
             const addFile = (entry) => {
@@ -265,6 +363,23 @@
             });
         });
 
+        let lastDragEnter = null;
+
+        window.addEventListener('dragenter', (ev) => {
+            ev.preventDefault();
+            lastDragEnter = ev.target;
+            console.log(ev);
+            uploadbox.classList.add('fullpage');
+            console.log(uploadbox.classList);
+
+        });
+        window.addEventListener('dragleave', (ev) => {
+            ev.preventDefault();
+            console.log(ev);
+            if (ev.target === lastDragEnter) uploadbox.classList.remove('fullpage');
+            console.log(uploadbox.classList);
+        });
+
         const savedData = localStorage.getItem('deckData');
         if (savedData) {
             deck = JSON.parse(savedData);
@@ -280,7 +395,9 @@
         dpiinput.value = deck.cardDPI;
         ttsFilenamePrefix.value = deck.ttsFilenamePrefix;
         editor.getModel().setValue(deck.scriptText);
-        cardindex.value = 1;
+        googleSheetsUrl.value = deck.googleSheetsUrl ?? '';
+        googleSheetsSheet.value = deck.googleSheetsSheet ?? '';
+        googleSheetsDestination.value = deck.googleSheetsDestination ?? '';
 
         listFiles();
         render();
@@ -333,6 +450,18 @@
         }
     }
 
+    async function fetchGoogleSheets(url, sheet) {
+        const regex = /\/spreadsheets\/d\/([^/]+)/;
+        const match = url.match(regex);
+        if (!match) {
+            throw new Error(`Invalid Google Sheets URL: ${url}`);
+        }
+        const id = match[1];
+        const response = await fetch(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${sheet}`);
+        const data = await response.text();
+        return data;
+    }
+
     function resetDimensions() {
         canvas.width = Math.ceil(deck.cardDPI * deck.cardWidth);
         canvas.height = Math.ceil(deck.cardDPI * deck.cardHeight);
@@ -374,7 +503,7 @@
                     [[], []];
             }
 
-            let cardIndex = index ?? cardindex.value;
+            let cardIndex = index ?? +cardindex.value;
 
             const lastCard = data.length - 1;
 
