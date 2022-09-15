@@ -15,19 +15,22 @@
 <body>
     <div class="wrapper">
         <div>
+            <div id="monaco-container"></div>
             <div class="header">
+                <button id="save-local">Download Backup</button>
+                <label>Deck name: <input id="deck-name" type="text"></label>
+                <label>Data file: <input id="datafilepath" type="text"></label>
+                <label>Preview index: <input id="cardindex" type="number"></label>
                 <button id="render-button">Render</button>
-                <label>Data file full path: <input id="datafilepath" type="text"></label>
-                <label>Card preview index: <input id="cardindex" type="number"></label>
+            </div>
+            <div class="header">
+                <button id="load-local">Restore Backup</button>
+                <label>DPI: <input id="dpiinput" type="number"></label>
+                <label>TTS Filename Prefix: <input id="tts-filename-prefix" type="text"></label>
                 <button id="render-all-button">Publish All</button>
             </div>
             <div class="header">
-                <label>DPI: <input id="dpiinput" type="number"></label>
-                <label>TTS Filename Prefix: <input id="tts-filename-prefix" type="text"></label>
-            </div>
-            <div id="monaco-container"></div>
-            <div class="header">
-                <div id="uploadbox">Drag files here<span class="loader"></span></div>
+                <div id="uploadbox">Drag new files here<span class="loader"></span></div>
             </div>
             <div id="filelist">
             </div>
@@ -38,6 +41,9 @@
     </div>
     <template id="file-template">
         <div class="file">
+            <div>
+                <button class="filedelete">❌</button>
+            </div>
             <div class="filename"></div>
             <div class="fileimage">
                 <img src="">

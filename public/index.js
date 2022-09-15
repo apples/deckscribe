@@ -11,10 +11,14 @@
     let cardindex;
     let dpiinput;
     let ttsFilenamePrefix;
+    let saveLocalButton;
+    let loadLocalButton;
+    let deckNameInput;
 
     let whiteboard;
 
     let deck = {
+        name: 'deck',
         cardDPI: 300,
         cardWidth: 2.5,
         cardHeight: 3.5,
@@ -45,12 +49,6 @@
             theme: 'vs-dark',
         });
 
-        const savedData = localStorage.getItem('deckData');
-        if (savedData) {
-            deck = JSON.parse(savedData);
-        }
-        listFiles();
-
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext('2d');
         resetDimensions();
@@ -61,9 +59,43 @@
             saveDeckData();
         });
 
+        deckNameInput = document.getElementById('deck-name');
+        deckNameInput.addEventListener('change', () => {
+            deck.name = deckNameInput.value;
+            saveDeckData(true);
+        });
+
         renderButton = document.getElementById('render-button');
         renderButton.addEventListener('click', () => {
             render();
+        });
+
+        saveLocalButton = document.getElementById('save-local');
+        saveLocalButton.addEventListener('click', () => {
+            if (!deck.name) {
+                alert('Please enter a deck name');
+                return;
+            }
+
+            const data = JSON.stringify(deck);
+            const blob = new Blob([data], { type: 'application/json' });
+            saveAs(blob, `${deck.name}-deckscribe.json`);
+        });
+
+        loadLocalButton = document.getElementById('load-local');
+        loadLocalButton.addEventListener('click', async () => {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            fileInput.addEventListener('change', async () => {
+                const file = fileInput.files[0];
+                const data = await file.text();
+                const newDeck = JSON.parse(data);
+                deck = newDeck;
+                reloadDeck();
+                saveDeckData(true);
+            });
+            fileInput.click();
         });
 
         renderAllButton = document.getElementById('render-all-button');
@@ -120,7 +152,6 @@
         });
 
         datafilepath = document.getElementById('datafilepath');
-        datafilepath.value = deck.dataFilePath ?? '';
         datafilepath.addEventListener('change', (ev) => {
             deck.dataFilePath = datafilepath.value;
             saveDeckData(true);
@@ -128,7 +159,6 @@
         });
 
         cardindex = document.getElementById('cardindex');
-        cardindex.value = 1;
         cardindex.addEventListener('change', (ev) => {
             if (cardindex.value < 1) {
                 cardindex.value = 1;
@@ -137,7 +167,6 @@
         });
 
         dpiinput = document.getElementById('dpiinput');
-        dpiinput.value = deck.cardDPI;
         dpiinput.addEventListener('change', (ev) => {
             deck.cardDPI = dpiinput.value;
             saveDeckData(true);
@@ -146,7 +175,6 @@
         });
 
         ttsFilenamePrefix = document.getElementById('tts-filename-prefix');
-        ttsFilenamePrefix.value = deck.ttsFilenamePrefix || '';
         ttsFilenamePrefix.addEventListener('change', (ev) => {
             deck.ttsFilenamePrefix = ttsFilenamePrefix.value;
             saveDeckData(true);
@@ -237,6 +265,24 @@
             });
         });
 
+        const savedData = localStorage.getItem('deckData');
+        if (savedData) {
+            deck = JSON.parse(savedData);
+        }
+
+        reloadDeck();
+        render();
+    }
+
+    function reloadDeck() {
+        deckNameInput.value = deck.name;
+        datafilepath.value = deck.dataFilePath;
+        dpiinput.value = deck.cardDPI;
+        ttsFilenamePrefix.value = deck.ttsFilenamePrefix;
+        editor.getModel().setValue(deck.scriptText);
+        cardindex.value = 1;
+
+        listFiles();
         render();
     }
 
@@ -273,7 +319,16 @@
             item.querySelector('.filename').innerText = file.fullPath;
             if (file.type == 'image') {
                 item.querySelector('.fileimage > img').src = file.url;
+            } else {
+                item.querySelector('.fileimage > img').style = 'display: none';
             }
+            item.querySelector('.filedelete').addEventListener('click', () => {
+                if (confirm(`Are you sure you want to delete ${file.fullPath}?`)) {
+                    delete deck.files[file.fullPath];
+                    listFiles();
+                    saveDeckData(true);
+                }
+            });
             list.appendChild(item);
         }
     }
