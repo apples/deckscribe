@@ -1,0 +1,106 @@
+
+body {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAepJREFUeJztm1EShCAIhm2n43j/k3if3acax1UDAgT1e2xN7F9ETDpCCN9QEGMsL92klEDtWvdi78HazNu22udtPujRTMYWYPQARnPWLpbzqAW0nTWuuJBSqguQN3qDB4HO8kE9DJqTHQO0DWp72JO97QEaRigZI+U3qM28D5QAVPet3cexynCgHgOgQAV6G1PMCvAWqDBTCUCJNedqiU8JygOo0dxKwKux84DRA8ACyREwHqcigOU4s6dA6wfL/9oTmLEfIYQvZM54FqSHaAzQSmdbdiH9kgTAvpvn6pvab+9swN0yeMGVXC2/CiwvgNspwBU4XQrwdOCJwaUAPXJxIKLsGDB6ACWtf03qncLZMwoB+grb6ksRkgeM2BdI2VSbAlqiYe38nQ5LGrNGjFHPA0ZuuXv9mlsFIHAK5UYAzlWEfDgqTYxRfelcPhNcXgCWKdDbnVnNAC+WPhzt1glaRGKjdAvAWcfjCXEPkNppctlwNQUwQFNvMwK82SuUCRSGW4BZ5jQWMx7ADbhKDBP9Jb1EI1jmXM+N9gBKeT11neYoi33qc+8FRg+Ayj4dZsKtB3AF5CMUX44+VWjM9o0R2gMkHhhTSwQtz4GeIP8JgHnAGXaQOwjWLkpUavUY6Rnqq8Dbz+e57/kBwA3rZ/0Hlm8AAAAASUVORK5CYII=);
+    color: white;
+}
+
+.previewCanvas {
+    border: 3px solid magenta;
+}
+
+.uploadbox {
+    border: 1px solid red;
+    width: 500px;
+    height: 50px;
+    background: rgba(32, 32, 200, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#monaco-container {
+    width: 1000px;
+    height: 800px;
+    border: 1px solid grey;
+}
+
+.filelist {
+    background: #000;
+    display: inline-block;
+}
+
+.fullpage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.header {
+    margin-bottom: 1em;
+}
+
+.wrapper {
+    display: flex;
+    gap: 1em;
+}
+
+.file {
+    display: flex;
+    align-items: center;
+}
+
+.file:nth-child(even) {
+    background: #222;
+}
+
+.filebuttons {
+    display: flex;
+    margin-right: 1em;
+}
+
+.filedelete {
+    margin-right: 1em;
+}
+
+.filerename {
+    font-size: 200%;
+    line-height: 50%;
+}
+
+.filename {
+    font-family: monospace;
+    width: 40em;
+}
+
+.fileimage img {
+    image-rendering: pixelated;
+    min-height: 2em;
+    max-height: 3em;
+    border: 1px solid #f0f;
+    background: #888;
+}
+
+.loader {
+    visibility: hidden;
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

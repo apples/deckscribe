@@ -1,0 +1,77 @@
+{
+    "SaveName": "",
+    "Date": "",
+    "VersionNumber": "",
+    "GameMode": "",
+    "GameType": "",
+    "GameComplexity": "",
+    "Tags": [],
+    "Gravity": 0.5,
+    "PlayArea": 0.5,
+    "Table": "",
+    "Sky": "",
+    "Note": "",
+    "TabStates": {},
+    "LuaScript": "",
+    "LuaScriptState": "",
+    "XmlUI": "",
+    "ObjectStates": [
+        {
+            "GUID": "c4ff73",
+            "Name": "Deck",
+            "Transform": {
+                "posX": 0.0,
+                "posY": 5.0,
+                "posZ": 0.0,
+                "rotX": 0.0,
+                "rotY": 0.0,
+                "rotZ": 0.0,
+                "scaleX": 1.0,
+                "scaleY": 1.0,
+                "scaleZ": 1.0
+            },
+            "Nickname": "",
+            "Description": "",
+            "GMNotes": "",
+            "ColorDiffuse": {
+                "r": 0.713235259,
+                "g": 0.713235259,
+                "b": 0.713235259
+            },
+            "LayoutGroupSortIndex": 0,
+            "Value": 0,
+            "Locked": false,
+            "Grid": true,
+            "Snap": true,
+            "IgnoreFoW": false,
+            "MeasureMovement": false,
+            "DragSelectable": true,
+            "Autoraise": true,
+            "Sticky": true,
+            "Tooltip": true,
+            "GridProjection": false,
+            "HideWhenFaceDown": true,
+            "Hands": false,
+            "SidewaysCard": false,
+            "DeckIDs": [],
+            "CustomDeck": {},
+            "LuaScript": "",
+            "LuaScriptState": "",
+            "XmlUI": "",
+            "PhysicsMaterial": {
+                "StaticFriction": 1.0,
+                "DynamicFriction": 0.7,
+                "Bounciness": 0.0,
+                "FrictionCombine": 0,
+                "BounceCombine": 0
+            },
+            "Rigidbody": {
+                "Mass": 0.76,
+                "Drag": 0.1,
+                "AngularDrag": 0.1,
+                "UseGravity": true
+            },
+            "ContainedObjects": []
+        }
+    ]
+}
